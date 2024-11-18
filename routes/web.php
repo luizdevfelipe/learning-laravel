@@ -2,15 +2,18 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::any('/', function () {
-    return 'welcome';
+Route::get('/', function() {
+    return view('welcome');
 });
 
-Route::match(['get', 'post'], '/dashboard', function() {
-    return 'dashboard';
+Route::get('/transactions/{transactionId}', function($transactionId) {
+    return  'The id of the current transaction is ' . $transactionId;
 });
 
-Route::get('/users', fn() => ['luiz', 'felipe']
-);
+Route::get('/transactions/{transactionId}/files/{fileId}', function($id, $fileId) {
+    return  'The id of the current transaction is ' . $id . ' and the file accessed is ' . $fileId;
+});
 
-Route::redirect('/', 'dashboard');
+Route::get('/report/{year}/{month?}', function($year, $month = 'x') {
+    return  'Generating report for ' . $year . '/' . $month;
+});
