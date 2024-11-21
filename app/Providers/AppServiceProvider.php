@@ -20,7 +20,5 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Route::pattern('transactionId', '[0-9]+');
-        Route::pattern('fileId', '[0-9]+');
     }
 }
