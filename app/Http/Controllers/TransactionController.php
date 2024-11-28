@@ -6,10 +6,9 @@ use Illuminate\Http\Request;
 
 class TransactionController extends Controller
 {
-    public function index(): string
+    public function index(Request $request): string
     {
-        echo route('transaction', ['transactionId' => 5]) . '<br>';
-        // return to_route('transaction', ['transactionId' => 5]);
+        echo $request->headers->get('X-Request-Id') . '<br>';
         return 'Transactions Page';
     }
 
