@@ -5,9 +5,8 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class CheckUserRole
+class SomeOtherMiddleware
 {
     /**
      * Handle an incoming request.
@@ -16,13 +15,8 @@ class CheckUserRole
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // Assumindo um usuário já autenticado que poderia ser obtido via Request
-        $user = ['id' => 123, 'name' => 'Luiz', 'role' => 'admin'];
-
-        if ($user['role'] === 'admin') {
-            return $next($request);
-        }
+        dump('Other Middleware');
         
-        abort(404);
+        return $next($request);
     }
 }

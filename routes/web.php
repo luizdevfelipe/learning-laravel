@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DocumentController;
 use App\Http\Middleware\CheckUserRole;
+use App\Http\Middleware\SomeOtherMiddleware;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -10,6 +11,14 @@ Route::get('/', function () {
 
 Route::get('/documents', [DocumentController::class, 'index'])->name('documents');
 
-Route::get('/administration', function() {
-    return 'Secret Admin Page';
-})->middleware(CheckUserRole::class);
+Route::prefix('/administration')->middleware([CheckUserRole::class, SomeOtherMiddleware::class])->group(function () {
+    Route::get('/', function () {
+        return 'Secret Admin Page';
+    });
+
+    Route::withoutMiddleware(SomeOtherMiddleware::class)->group(function () {
+        Route::get('/other', function () {
+            return 'Another Admin Page';
+        });
+    });
+});
