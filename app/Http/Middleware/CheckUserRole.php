@@ -14,8 +14,9 @@ class CheckUserRole
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next): Response
+    public function handle(Request $request, Closure $next, string $role): Response
     {
+        dump('Checking  User role: ' . $role);
         // Assumindo um usuário já autenticado que poderia ser obtido via Request
         $user = ['id' => 123, 'name' => 'Luiz', 'role' => 'admin'];
 
