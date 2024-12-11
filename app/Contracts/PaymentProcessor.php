@@ -4,5 +4,5 @@ namespace App\Contracts;
 
 interface PaymentProcessor
 {
-    public function process(array $transaction): array;
+    public function process(array $transaction): void;
 }
