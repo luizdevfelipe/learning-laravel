@@ -4,19 +4,22 @@ namespace App\Http\Controllers;
 
 use App\Contracts\PaymentProcessor;
 use App\Services\TransactionService;
-use Illuminate\Http\Request;
+use Illuminate\Contracts\Container\Container;
 use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Support\Facades\App;
 
 class TransactionController extends Controller implements HasMiddleware
 {
     public function __construct(
         private readonly TransactionService $transactionService,
         private readonly PaymentProcessor   $paymentProcessor,
+        private readonly Container          $container,
     ) {}
 
-    public function index(Request $request): string
+    public function index(): string
     {
-        echo $request->headers->get('X-Request-Id') . '<br>';
+        $this->container->make(PaymentProcessor::class);
+        dump(App::make(PaymentProcessor::class));
         return 'Transactions Page';
     }
 
