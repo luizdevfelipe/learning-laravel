@@ -5,6 +5,7 @@ use App\Http\Middleware\SomeOtherMiddleware;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
+    dd(app());
     return view('welcome');
 });
 

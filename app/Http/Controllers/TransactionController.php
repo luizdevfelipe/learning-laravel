@@ -12,20 +12,20 @@ class TransactionController extends Controller implements HasMiddleware
 {
     public function __construct(
         private readonly TransactionService $transactionService,
-        private readonly PaymentProcessor   $paymentProcessor,
         private readonly Container          $container,
     ) {}
 
     public function index(): string
     {
-        $this->container->make(PaymentProcessor::class);
-        dump(App::make(PaymentProcessor::class));
         return 'Transactions Page';
     }
 
-    public function show(int $transactionId): string
+    public function show(int $transactionId, PaymentProcessor $paymentProcessor): string
     {
         $transaction = $this->transactionService->findTransaction($transactionId);
+
+        $paymentProcessor->process($transaction);
+
         return 'Transaction: ' . $transaction['transactionId'] . ', ' . $transaction['amount'];
     }
 
