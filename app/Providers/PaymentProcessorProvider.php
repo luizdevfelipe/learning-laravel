@@ -18,10 +18,12 @@ class PaymentProcessorProvider extends ServiceProvider implements DeferrableProv
         $this->app->singleton(PaymentProcessor::class, function (Application $app) {
             return $app->make(Stripe::class, ['config' => []]);
         });
+
+        $this->app->alias(PaymentProcessor::class, 'paymentProcessor');
     }
 
     public function provides()
     {
-        return [PaymentProcessor::class];
+        return [PaymentProcessor::class, 'paymentProcessor'];
     }
 }
