@@ -2,7 +2,6 @@
 
 use App\Facade\Payment;
 use App\Http\Controllers\DocumentController;
-use App\Http\Middleware\SomeOtherMiddleware;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
 
@@ -13,14 +12,19 @@ Route::get('/', function () {
 
 Route::get('/documents', [DocumentController::class, 'index'])->name('documents');
 
-Route::prefix('/administration')->middleware('role:admin')->group(function () {
-    Route::get('/', function () {
-        return 'Secret Admin Page';
-    });
+Route::get('/examples/pipeline', function () {
+    $order = [
+        'total' => 100,
+        'discount' => 10,
+    ];
 
-    Route::withoutMiddleware(SomeOtherMiddleware::class)->group(function () {
-        Route::get('/other', function () {
-            return 'Another Admin Page';
-        });
-    });
+    dd(Illuminate\Support\Facades\Pipeline::send($order)
+        ->through([
+            \App\Pipelines\Order\ValidateOrder::class,
+            \App\Pipelines\Order\CalculateShipping::class,
+            \App\Pipelines\Order\ApplyDiscount::class,
+            \App\Pipelines\Order\GenerateInvoice::class,
+            \App\Pipelines\Order\CompleteOrder::class,
+        ])
+        ->thenReturn());
 });
