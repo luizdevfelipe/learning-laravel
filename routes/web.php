@@ -1,30 +1,38 @@
 <?php
 
-use App\Facade\Payment;
-use App\Http\Controllers\DocumentController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
 
 Route::get('/', function () {
-    Payment::process(['transactionId' => 123]);
-    return View::make('welcome');
+    return View::first(['home.welcome', 'dashboard'], ['name' => 'Luiz']);
 });
 
-Route::get('/documents', [DocumentController::class, 'index'])->name('documents');
+Route::get('/name', function () {
+    return View::make('home.welcome');
+});
 
-Route::get('/examples/pipeline', function () {
-    $order = [
-        'total' => 100,
-        'discount' => 10,
-    ];
+Route::get('/examples/if', function () {
+    return View::make('examples.if', [
+        'isAdmin' => false,
+        'isEditor' => true,
+        'items' => []
+    ]);
+});
 
-    dd(Illuminate\Support\Facades\Pipeline::send($order)
-        ->through([
-            \App\Pipelines\Order\ValidateOrder::class,
-            \App\Pipelines\Order\CalculateShipping::class,
-            \App\Pipelines\Order\ApplyDiscount::class,
-            \App\Pipelines\Order\GenerateInvoice::class,
-            \App\Pipelines\Order\CompleteOrder::class,
-        ])
-        ->thenReturn());
+Route::get('/examples/switch', function () {
+    return View::make('examples.switch', [
+        'role' => 'editor'
+    ]);
+});
+
+Route::get('/examples/loops', function () {
+    return View::make('examples.loops', [
+        'users' => ['Luiz', 'Maria', 'João'],
+        'tasks' => [],
+        'numbers' => [1, 2, 3]
+    ]);
+});
+
+Route::get('/examples/includes', function () {
+    return View::make('examples.includes');
 });
