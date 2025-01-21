@@ -8,7 +8,12 @@ Route::get('/', function () {
 })->name('dashboard');
 
 Route::get('/transactions', function () {
-    return View::make('transactions');
+    return View::make('transactions', [
+        'totalIncome' => 50000,
+        'totalExpense' => 45000,
+        'netSaving' => 5000,
+        'goal' => 7500,
+    ]);
 })->name('transactions');
 
 Route::get('/categories', function () {
