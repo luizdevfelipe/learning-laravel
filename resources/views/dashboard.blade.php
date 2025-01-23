@@ -1,9 +1,3 @@
-@extends('layout')
-
-@section('title', 'Dashboard')
-
-@section('header-title', 'Dashboard')
-
-@section('content')
-    Dashboard
-@endsection
+<x-layout title="Dashboard" headerTitle="Dashboard">
+    Hello
+</x-layout>
