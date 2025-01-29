@@ -1,5 +1,6 @@
 <nav class="bg-blue-500 p-4">
-    <div class="container mx-auto">
+    <div class="container mx-auto flex items-center">
+        <img class="h-8 mr-4" src="{{ Vite::asset('resources/images/logo.png') }}" alt="Logo">
         @php
         $active = 'font-bold border-b-2 border-white';
 
