@@ -4,20 +4,26 @@ namespace App\Http\Controllers;
 
 use App\Contracts\PaymentProcessor;
 use App\Services\TransactionService;
+use Carbon\Carbon;
 use Illuminate\Contracts\Container\Container;
-use Illuminate\Routing\Controllers\HasMiddleware;
-use Illuminate\Support\Facades\App;
+use Illuminate\Http\Request;
+use Illuminate\View\View;
 
-class TransactionController extends Controller implements HasMiddleware
+class TransactionController extends Controller
 {
     public function __construct(
         private readonly TransactionService $transactionService,
         private readonly Container          $container,
     ) {}
 
-    public function index(): string
+    public function index(): View
     {
-        return 'Transactions Page';
+        return view('transactions', [
+            'totalIncome' => 50000,
+            'totalExpense' => 45000,
+            'netSaving' => 5000,
+            'goal' => 7500,
+        ]);
     }
 
     public function show(int $transactionId, PaymentProcessor $paymentProcessor): string
@@ -29,24 +35,19 @@ class TransactionController extends Controller implements HasMiddleware
         return 'Transaction: ' . $transaction['transactionId'] . ', ' . $transaction['amount'];
     }
 
-    public function create(): string
+    public function create(): View
     {
-        return 'Form to creat a Transaction';
+        return view('transactions.create');
     }
 
-    public function store(): string
+    public function store(Request $request, TransactionService $transactionService): string
     {
-        return 'Transaction Created';
-    }
+        $amount = $request->get('transaction_amount');
+        $date = $request->get('transaction_date');
+        $description = $request->get('transaction_description');
 
-    public function documents(int $transactionId): string
-    {
-        echo route('transactions.documents', ['transactionId' => $transactionId]) . '<br>';
-        return 'Transaction Documents';
-    }
+        $transactionService->create($amount, new Carbon($date), $description);
 
-    public static function middleware()
-    {
-        return [];
+        return 'Transaction created successfully!';
     }
 }
