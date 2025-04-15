@@ -4,7 +4,7 @@
         @csrf
         <div style="margin-bottom: 15px;">
             <label for="transaction_date" style="display: block; font-weight: bold; margin-bottom: 5px;">Transactions Date:</label>
-            <input type="date" name="transaction_date" id="transaction_date" required style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+            <input type="datetime-local" name="transaction_date" id="transaction_date" required style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
         </div>
         <div style="margin-bottom: 15px;">
             <label for="transaction_amount" style="display: block; font-weight: bold; margin-bottom: 5px;">Transaction Amount:</label>
