@@ -48,6 +48,6 @@ class TransactionController extends Controller
 
         $transactionService->create($amount, new Carbon($date), $description);
 
-        return 'Transaction created successfully!';
+        return redirect(route('transactions.index'));
     }
 }
