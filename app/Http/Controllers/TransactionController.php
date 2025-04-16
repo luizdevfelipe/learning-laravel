@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Contracts\PaymentProcessor;
 use App\Services\TransactionService;
 use Carbon\Carbon;
-use Illuminate\Contracts\Container\Container;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -13,11 +12,12 @@ class TransactionController extends Controller
 {
     public function __construct(
         private readonly TransactionService $transactionService,
-        private readonly Container          $container,
     ) {}
 
     public function index(): View
     {
+        $transactions = $this->transactionService->getAll();
+
         return view('transactions', [
             'totalIncome' => 50000,
             'totalExpense' => 45000,
@@ -40,13 +40,13 @@ class TransactionController extends Controller
         return view('transactions.create');
     }
 
-    public function store(Request $request, TransactionService $transactionService): string
+    public function store(Request $request): string
     {
         $amount = $request->get('transaction_amount');
         $date = $request->get('transaction_date');
         $description = $request->get('transaction_description');
 
-        $transactionService->create($amount, new Carbon($date), $description);
+        $this->transactionService->create($amount, new Carbon($date), $description);
 
         return redirect(route('transactions.index'));
     }
