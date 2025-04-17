@@ -4,6 +4,7 @@ namespace App\Services;
 
 use Carbon\Carbon;
 use Illuminate\Database\DatabaseManager;
+use stdClass;
 
 class TransactionService
 {
@@ -11,12 +12,9 @@ class TransactionService
     {
     }
 
-    public function findTransaction(int $transactionId): array
+    public function find(int $transactionId): ?stdClass
     {
-        return [
-            'transactionId' => $transactionId,
-            'amount' => 25,
-        ];
+        return $this->db->selectOne('SELECT * FROM transactions WHERE id = ?', [$transactionId]);
     }
 
     public function create(float $amount, Carbon $date, string $description): bool
