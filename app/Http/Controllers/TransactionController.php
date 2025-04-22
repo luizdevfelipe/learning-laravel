@@ -19,12 +19,15 @@ class TransactionController extends Controller
     public function index(): View
     {
         $transactions = $this->transactionService->getAll();
+        $totals = $this->transactionService->getTotals();
+        $income = $totals->income;
+        $expense = $totals->expense;
 
         return view('transactions', [
-            'totalIncome'  => 50000,
-            'totalExpense' => 45000,
-            'netSaving'    => 5000,
-            'goal'         => 7500,
+            'totalIncome'  => $income,
+            'totalExpense' => $expense,
+            'netSaving'    => $income - $expense,
+            'goal'         => 0,
             'transactions' => $transactions,
         ]);
     }
@@ -34,9 +37,10 @@ class TransactionController extends Controller
         $transaction = $this->transactionService->find($transactionId);
 
         return view('transactions.edit', [
-            'date'        => $transaction->date,
-            'amount'      => $transaction->amount,
-            'description' => $transaction->description,
+            'transactionId' => $transaction->id,
+            'date'          => $transaction->transaction_date,
+            'amount'        => $transaction->amount,
+            'description'   => $transaction->description,
         ]);
     }
 
