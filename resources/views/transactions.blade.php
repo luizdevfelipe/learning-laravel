@@ -45,7 +45,7 @@
                             <form action="{{ route('transactions.destroy', $transaction->id) }}" method="post" onsubmit="return confirm('Are you sure you want to delete this transaction?');">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="text-white py-2 px-4 rounded" style="background-color: red;">
+                                <button type="submit" class="text-white py-2 px-4 rounded" style="background-color: red; cursor: pointer;">
                                     Delete
                                 </button>
                             </form>
