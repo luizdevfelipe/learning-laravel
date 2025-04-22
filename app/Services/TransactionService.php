@@ -47,4 +47,24 @@ class TransactionService
         return $this->db->delete('DELETE FROM transactions WHERE id = ?', [$transactionId]);
     }
 
+    public function getTotalIncome(): float
+    {
+        return (float) $this->db->scalar('SELECT SUM(amount) FROM transactions WHERE amount > 0');
+    }
+
+    public function getTotalExpense(): float
+    {
+        return (float) $this->db->scalar('SELECT ABS(SUM(amount)) FROM transactions WHERE amount < 0');
+    }
+
+    public function getTotals(): stdClass
+    {
+        return $this->db->selectOne(
+            'SELECT SUM(CASE WHEN amount > 0 THEN amount ELSE 0 END) as income,
+                    ABS(SUM(CASE WHEN amount < 0 THEN amount ELSE 0 END)) as expense
+            FROM transactions'
+        );
+    }
+
+
 }
